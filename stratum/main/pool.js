@@ -1442,7 +1442,9 @@ const Pool = function(config, configMain, callback) {
       const validPorts = _this.config.ports
         .filter((port) => port.port === client.socket.localPort)
         .filter((port) => typeof port.difficulty.initial !== 'undefined');
-      if (validPorts.length >= 1) client.broadcastDifficulty(validPorts[0].difficulty.initial);
+      const minerParams = params[0] ? params[0].split('/')[0] : '';
+      if (minerParams === 'NiceHash' && validPorts[0].difficulty.niceHash) client.broadcastDifficulty(validPorts[0].difficulty.niceHash);
+      else if (validPorts.length >= 1) client.broadcastDifficulty(validPorts[0].difficulty.initial);
       else client.broadcastDifficulty(1000);
 
       // Send Mining Job Parameters to Miner
